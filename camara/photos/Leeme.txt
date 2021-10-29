@@ -1,2 +1,1 @@
-Este directorio almacena las fotos tomadas con la camara del celular o la
-camara de la computadora.
+Este directorio almacena las fotos tomadas con la camara del celular o la camara de la computadora.
