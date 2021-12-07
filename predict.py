@@ -2,6 +2,8 @@ import numpy as np
 from keras.preprocessing.image import load_img, img_to_array
 from keras.models import load_model
 from PIL import Image
+import cv2
+import uuid
 
 longitud, altura = 100 , 100
 modelo = './modelo/modelo.h5'
@@ -19,19 +21,32 @@ def predict(file):
   if answer == 0:
     im = Image.open('./LSM/mango-lsm.png')
     im.show()
-    #print("pred: mango")
   elif answer == 1:
     im = Image.open('./LSM/manzana-lsm.png')
     im.show()
-    #print("pred: manzana")
   elif answer == 2:
     im = Image.open('./LSM/pera-lsm.png')
     im.show()
-    #print("pred: pera")
+
   elif answer == 3:
     im = Image.open('./LSM/platano-lsm.png')
     im.show()
-    #print("pred: platano")
   return answer
 
-predict('mango.jpg')
+#tomar foto desde webcam
+cap = cv2.VideoCapture(0)
+flag = cap.isOpened()
+while(flag):
+    ret, frame = cap.read()
+    cv2.imshow("Learn-Cam",frame)
+    k = cv2.waitKey(1) & 0xFF
+    if k == ord (' '): #Presione la tecla espacio para ingresar a la siguiente operación de guardado de imágenes
+        namePhoto = str(uuid.uuid4())
+        cv2.imwrite("./camara/photos/" + namePhoto + ".jpg", frame)
+        cv2.imshow("./camara/photos/" + namePhoto + ".jpg", frame)
+    elif k == ord ('q') or k == ord('Q'): #Presione la tecla q, el programa sale
+        break
+cap.release()
+cv2.destroyAllWindows()
+#hacer la predicción
+predict("./camara/photos/" + namePhoto + ".jpg")
